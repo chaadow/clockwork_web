@@ -18,7 +18,7 @@ module ClockworkWeb
     attr_accessor :monitor
     attr_accessor :running_threshold
     attr_accessor :on_job_update
-    attr_accessor :current_user_method
+    attr_accessor :user_method
   end
   self.monitor = true
   self.running_threshold = 60 # seconds
