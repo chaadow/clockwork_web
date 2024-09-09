@@ -22,7 +22,7 @@ module ClockworkWeb
   end
   self.monitor = true
   self.running_threshold = 60 # seconds
-  self.current_user_method = :current_user
+  self.user_method = :current_user
 
   def self.enable(job)
     if redis
