@@ -100,6 +100,7 @@
               </td>
               <td><%= last_run(@last_runs[event.job]) %></td>
               <td><%= button_to enabled ? "Disable" : "Enable", home_job_path(job: event.job, enable: !enabled), disabled: !ClockworkWeb.redis %></td>
+              <td><%= button_to "Manual run", home_execute_path(job: event.job), disabled: !ClockworkWeb.redis %></td>
             </tr>
           <% end %>
         </tbody>
