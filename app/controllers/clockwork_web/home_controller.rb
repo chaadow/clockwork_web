@@ -41,10 +41,10 @@ module ClockworkWeb
 
       event = Clockwork.manager.events.find { _1.job == params[:job] }
 
-      event.instance_variable_get(:@block).call
+      event.run(Time.now)
       ClockworkWeb.set_last_run(event.job)
 
-      redirect_to root_path, notice: "job: '#{job}' successfully run"
+      redirect_to root_path
     end
   end
 end
