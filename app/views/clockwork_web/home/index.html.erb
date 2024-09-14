@@ -79,6 +79,7 @@
           <tr>
             <th>Job</th>
             <th class="width-15">Period</th>
+            <th class="width-15">Implementation block</th>
             <th class="width-15">Last Run</th>
             <th class="width-15">Action</th>
           </tr>
@@ -96,6 +97,14 @@
                 <% end %>
                 <% if event.instance_variable_get(:@if) %>
                   if __
+                <% end %>
+              </td>
+              <td>
+                <% if block = event.instance_variable_get(:@block) %>
+                  <details>
+                    <summary>Click to open</summary>
+                    <%= RubyVM::AbstractSyntaxTree.of(block, keep_script_lines: true).source.tap(&:strip!) %>
+                  </details>
                 <% end %>
               </td>
               <td><%= last_run(@last_runs[event.job]) %></td>
