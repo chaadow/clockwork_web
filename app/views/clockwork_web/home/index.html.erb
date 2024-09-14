@@ -81,7 +81,7 @@
       <table>
         <thead>
           <tr>
-            <th>Job</th>
+            <th class="width-15">Job</th>
             <th class="width-15">Period</th>
             <th class="width-15">Last Run</th>
             <th class="width-15">Actions</th>
@@ -98,8 +98,8 @@
                 <% if at %>
                   at <%= friendly_time_part(at.instance_variable_get(:@hour)) %>:<%= friendly_time_part(at.instance_variable_get(:@min)) %>
                 <% end %>
-                <% if event.instance_variable_get(:@if) %>
-                  if __
+                <% if if_lambda = event.instance_variable_get(:@if) %>
+                  if: -> <%= RubyVM::AbstractSyntaxTree.of(if_lambda, keep_script_lines: true).source %>
                 <% end %>
               </td>
               <td><%= last_run(@last_runs[event.job]) %></td>
