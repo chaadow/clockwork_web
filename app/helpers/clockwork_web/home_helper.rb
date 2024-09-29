@@ -27,11 +27,22 @@ module ClockworkWeb
     end
 
     def friendly_extract_source_from_callable(callable, with_affixes: true)
-      source = RubyVM::AbstractSyntaxTree.of(callable, keep_script_lines: true).source
+      iseq = RubyVM::InstructionSequence.of(callable)
+      source =
+        if iseq.script_lines
+          iseq.script_lines.join("\n")
+        elsif File.readable?(iseq.absolute_path)
+          File.read(iseq.absolute_path)
+        end
       return '-' unless source
 
-      source.strip!
-      return source if with_affixes
+      location = iseq.to_a[4][:code_location]
+      return callable unless location
+
+      lines = source.lines[(location[0] - 1)..(location[2] - 1)]
+      lines[-1] = lines[-1].byteslice(...location[3])
+      lines[0] = lines[0].byteslice(location[1]...)
+      source = lines.join.strip
 
       source.tap do |source|
         source.delete_prefix!('{')
